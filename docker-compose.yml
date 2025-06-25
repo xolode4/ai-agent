@@ -22,21 +22,7 @@ services:
     restart: unless-stopped
     networks:
       - opensearch-net
-  #vector:
-  #  image: timberio/vector:latest-alpine
-  #  container_name: vector
-  #  volumes:
-  #    - ./vector/vector.yaml:/etc/vector/vector.yaml:ro
-  #    - /var/lib/docker/containers:/var/lib/docker/containers:ro
-  #    - /var/run/docker.sock:/var/run/docker.sock:ro
-  #  restart: unless-stopped
-  #  networks:
-  #    - opensearch-net
-  #  logging:
-  #    driver: "json-file"
-  #    options:
-  #      max-size: "100m"
-  #      max-file: "5"
+
 
   opensearch-node1: # This is also the hostname of the container within the Docker network (i.e. https://opensearch-node1/)
     image: opensearchproject/opensearch:latest
