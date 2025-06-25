@@ -16,7 +16,7 @@ services:
       - LOG_LEVEL=info
       - VAULT_URL=https://vault.home.lcl:8200
       - OPENSEARCH_HOST=http://opensearch-node1:9200
-      - VAULT_TOKEN=hvs.QMlcYPa4tNSmRhmYncg6zV76
+      - VAULT_TOKEN=
     depends_on:
       - opensearch-node1
     restart: unless-stopped
