@@ -1,0 +1,25 @@
+[sources.docker_logs]
+type = "docker_logs"
+
+[transforms.parse_logs]
+type = "remap"
+inputs = ["docker_logs"]
+source = '''
+structured = parse_json!(.message)
+'''
+[sinks.console]
+type = "console"
+inputs = ["parse_logs"]
+encoding.codec = "json"
+
+[sinks.opensearch]
+type = "elasticsearch"
+inputs = ["parse_logs"]
+endpoint = "http://opensearch-node1:9200"
+index = "ai-agent-logs"
+healthcheck.enabled = true
+compression = "none"
+auth.strategy = "basic"
+auth.user = "admin"
+auth.password = "Erty123UJN124"
+tls.verify_certificate = false

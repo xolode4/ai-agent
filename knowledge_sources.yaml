@@ -1,0 +1,8 @@
+
+dev:
+  репозиторий: "git@gitlab.home.lcl:ai-agent/service.git"
+  ветка: "main"
+  
+прод:
+  репозиторий: "git@gitlab.home.lcl:ai-agent/service.git"
+  ветка: "main"

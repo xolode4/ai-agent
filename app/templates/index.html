@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Log Analyzer</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/static/js/main.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1><i class="fas fa-robot"></i> AI Log Analyzer</h1>
+            <button id="theme-toggle" class="btn-icon">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
+
+        <main class="chat-container">
+            <div class="chat-controls">
+                <form method="post" action="/ask" id="chat-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="model"><i class="fas fa-brain"></i> Модель</label>
+                            <select name="model" id="model" class="select-box">
+                                <option value="openai">OpenAI</option>
+                                <option value="gigachat">GigaChat</option>
+                                <option value="opensearch">OpenSearch</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prompt_key"><i class="fas fa-mask"></i> Роль</label>
+                            <select name="prompt_key" id="prompt_key" class="select-box">
+                                {% for key, prompt in prompts.items() %}
+                                    <option value="{{ key }}">{{ prompt.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="knowledge-sources">
+                        <fieldset>
+                            <legend><i class="fas fa-book"></i> Источники знаний</legend>
+                            {% for env in ["прод", "тест", "dev"] %}
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="environments" value="{{ env }}">
+                                    <span class="checkmark"></span>
+                                    {{ env }}
+                                </label>
+                            {% endfor %}
+                        </fieldset>
+
+                        <fieldset>
+                            <legend><i class="fas fa-scroll"></i> Логи</legend>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="log_sources" value="security-auditlog">
+                                <span class="checkmark"></span>
+                                Security Audit
+                            </label>
+                        </fieldset>
+                    </div>
+
+                    <div class="message-input">
+                        <textarea name="question" rows="3" placeholder="Задайте вопрос о логах или коде..." 
+                                  id="question-input"></textarea>
+                        <button type="submit" class="btn-primary" id="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Отправить
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="chat-history" id="chat-history">
+                {% if question %}
+                    <div class="message user-message animate-in">
+                        <div class="message-content">{{ question }}</div>
+                        <div class="message-meta">Вы • {{ now() }}</div>
+                    </div>
+                    <div class="message bot-message animate-in">
+                        <div class="message-content">{{ answer | safe }}</div>
+                        <div class="message-meta">AI • {{ now() }}</div>
+                    </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+</body>
+</html>

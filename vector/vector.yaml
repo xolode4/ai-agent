@@ -1,0 +1,32 @@
+sources:
+  docker_logs:
+    type: docker_logs
+
+transforms:
+  parse_logs:
+    type: remap
+    inputs: ["docker_logs"]
+    source: |
+      msg_str = to_string(.message) ?? ""
+      structured = if is_json(msg_str) { parse_json(msg_str) } else { {} }
+
+sinks:
+  opensearch:
+    type: elasticsearch
+    inputs: ["parse_logs"]
+    endpoint: ["https://opensearch-node1:9200"]
+    auth:
+      strategy: basic
+      user: admin
+      password: Erty123UJN124
+    tls:
+      verify_certificate: false
+    mode: normal
+    normal:
+      index: "ai-agent-logs"
+
+  console:
+    type: console
+    inputs: ["parse_logs"]
+    encoding:
+      codec: json
